@@ -55,16 +55,21 @@ function installCardinal(cb) {
     });
 }
 
-function updateCardinal(cb) {
+async function updateCardinal(cb) {
+
     const currentDir = process.cwd();
     process.chdir('../' + CARDINAL_PATH);
-    run('gulp build')().then(function () {
+    await run('gulp build')().then(function () {
         process.chdir(currentDir);
         cb();
     });
 }
 async function deleteFiles(cb) {
     await del(['./cardinal.js', './cardinal/**', './themes/default/**']);
+    const currentDir = process.cwd();
+    process.chdir('../' + CARDINAL_PATH )
+    await del('./release/cardinal/**');
+    process.chdir(currentDir)
     cb();
 }
 function copyBuild(cb) {
@@ -87,4 +92,4 @@ function copyBuild(cb) {
     cb();
 }
 
-exports.build = series(init,getWebComponents, installComponents, getCardinal, installCardinal, updateCardinal, deleteFiles, copyBuild);
+exports.build = series(init, getWebComponents, installComponents, getCardinal, installCardinal, deleteFiles, updateCardinal, copyBuild);
