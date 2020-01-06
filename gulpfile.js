@@ -8,10 +8,13 @@ const include = require('gulp-include');
 const del = require('del');
 const fs = require('fs');
 const { series } = require('gulp');
+let PSKWEBCOMPONENTS_PATH;
+let CARDINAL_PATH;
 
-function init(cb){
-    const PSKWEBCOMPONENTS_PATH = PSKWEBCOMPONENTS_GITHUB_URL.split('/')[length(PSKWEBCOMPONENTS_GITHUB_URL.split('/') - 1)]
-    const CARDINAL_PATH = CARDINAL_GITHUB_URL.split('/')[length(PSKWEBCOMPONENTS_GITHUB_URL.split('/') - 1)]   
+function init(cb) {
+    CARDINAL_PATH = CARDINAL_GITHUB_URL.split('/')[CARDINAL_GITHUB_URL.split('/').length - 1]
+    PSKWEBCOMPONENTS_PATH = PSKWEBCOMPONENTS_GITHUB_URL.split('/')[PSKWEBCOMPONENTS_GITHUB_URL.split('/').length - 1]
+    cb();
 }
 
 function getWebComponents(cb) {
@@ -84,4 +87,4 @@ function copyBuild(cb) {
     cb();
 }
 
-exports.build = series(getWebComponents, installComponents, getCardinal, installCardinal, updateCardinal, deleteFiles, copyBuild);
+exports.build = series(init,getWebComponents, installComponents, getCardinal, installCardinal, updateCardinal, deleteFiles, copyBuild);
